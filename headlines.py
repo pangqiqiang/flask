@@ -6,22 +6,9 @@ RSS_FEEDS = {'bbc': 'http://feeds.bbci.co.uk/news/rss.xml',
             '36kr': 'http://36kr.com/feed',
             'chong4': 'http://www.chong4.com.cn/feed.php',
             'iol': 'http://www.iol.co.za/cmlink/1.640'}
-
 @app.route("/")
-@app.route("/bbc")
-def bbc():
-    return get_news("bbc")
-@app.route("/36kr")
-def cnn():
-    return get_news("36kr")
-@app.route("/chong4")
-def fox():
-    return get_news("chong4")
-@app.route("/iol")
-def iol():
-    return get_news("iol")
-
-def get_news(publication):
+@app.route("/<publication>")
+def get_news(publication="bbc"):
     feed = feedparser.parse(RSS_FEEDS.get(publication))
     first_article = feed["entries"][0]
     return """<html>
