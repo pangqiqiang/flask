@@ -10,22 +10,21 @@ RSS_FEEDS = {'bbc': 'http://feeds.bbci.co.uk/news/rss.xml',
             '36kr': 'http://36kr.com/feed',
             'chong4': 'http://www.chong4.com.cn/feed.php',
             'iol': 'http://www.iol.co.za/cmlink/1.640'}
+DEFAULTS = {"publication": "bcc", "city": "北京", 
+            "currency_from": "USD", "currency_to": "CNY"}
+WEATHER_URL = "https://www.sojson.com/open/api/weather/json.shtml/"
+CURRENCY_URL = "http://api.k780.com/"
+APPKEY="10003"
+SIGN="b59bc3ef6191eb9f747dd4e83c99f2a4"
 
 def get_weather(query):
-    api_url = "https://www.sojson.com/open/api/weather/json.shtml"
     query = quote(query)
-    api_url = api_url + "?city=" + query
-    print(api_url)
+    api_url = WEATHER_URL + "?city=" + query
     r = requests.get(api_url)
     if r.status_code == 200:
-        try:
-            data = r.json()
-        except Exception:
-            data = r.text
-            return "could not parse json weather info"
+        data = r.json()
         #parse = json.loads(data)
         raw_weather = data.get("data")
-
         weather = None
         if raw_weather and data.get("city"):
             raw_weather = raw_weather
@@ -37,9 +36,22 @@ def get_weather(query):
                          }
         return weather
 
+def get_rate(frm=None, to=None):
+    if not frm or not to:
+        frm, to = DEFAULTS["currency_from"], DEFAULTS["currency_to"]
+    queries = "?app={app}&scur={frm}&tcur={to}&appkey={appkey}&sign={sign}".format(
+        app="finance.rate", frm=frm.upper(), to=to.upper(), appkey=APPKEY, sign=SIGN)
+    api_url = CURRENCY_URL + queries
+    r = requests.get(api_url)
+    if r.status_code == 200:
+        data = r.json()
+        rate = data.get("result").get("rate")
+    return rate
+
+
 def get_news(query):
     if query.lower() not in RSS_FEEDS:
-         publication = DEFAULTS["publication"] 
+         query = DEFAULTS["publication"] 
     feed = feedparser.parse(RSS_FEEDS[query])
     return feed.get("entries")   
 
@@ -57,5 +69,5 @@ def home():
     return render_template("home.html",articles=articles, weather=weather)
 
 if __name__ == "__main__":
-    app.run(port=5000, debug=True)
-    #print(get_wether("成都"))
+    #app.run(port=5000, debug=True)
+    print(get_rate())
