@@ -36,18 +36,25 @@ def get_weather(query):
                         "quality": raw_weather.get("quality")
                          }
         return weather
-    
+
+def get_news(query):
+    if query.lower() not in RSS_FEEDS:
+         publication = DEFAULTS["publication"] 
+    feed = feedparser.parse(RSS_FEEDS[query])
+    return feed.get("entries")   
 
 @app.route("/")
-def get_news():
-    query = request.args.get("publication")
-    if not query or query.lower() not in RSS_FEEDS:
-        publication = 'bbc'
-    else:
-        publication = query.lower()
-    feed = feedparser.parse(RSS_FEEDS[publication])
-    weather = get_weather("北京")
-    return render_template("home.html",articles=feed.get("entries"), weather=weather)
+def home():
+    publication = request.args.get("publication")
+    city = request.args.get("city")
+    DEFAULTS={"publication": "bbc", "city": "成都"}
+    if not publication:
+        publication = DEFAULTS["publication"]
+    articles = get_news(publication)
+    if not city:
+        city = DEFAULTS["city"]
+    weather = get_weather(city)
+    return render_template("home.html",articles=articles, weather=weather)
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)

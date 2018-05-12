@@ -3,11 +3,13 @@
     <body>
         <h1>Headlines</h1>
         <h2>Current weather</h2>
-        <p>City:<b>{{weather.city}}</b></p>
-        <p>温度:{{weather.wendu}}</p>
-        <p>湿度：{{weather.shidu}}</p>
-        <p>pm2.5：{{weather.pm25}}</p>
-        <p>空气质量:{{weather.quality}}</p>
+        <p>城市:<b>{{weather.city}}</b></p>
+        <p>温度:{{weather.wendu}}&nbsp;湿度：{{weather.shidu}}&nbsp;pm2.5：{{weather.pm25}}&nbsp;<p>空气质量:{{weather.quality}}</p>
+        <form action="/" method="GET">
+        <input type="text" name="city" placehold="weather search">
+        <input type="submit" value="Submit">
+        </form>
+        <h2>Headlines</h2>
         <form>
                 <input type="text" name="publication" placeholder="search"/>
                 <input type="submit" value="Submit"/>
