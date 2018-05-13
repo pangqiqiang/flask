@@ -10,6 +10,7 @@ RSS_FEEDS = {'bbc': 'http://feeds.bbci.co.uk/news/rss.xml',
             '36kr': 'http://36kr.com/feed',
             'chong4': 'http://www.chong4.com.cn/feed.php',
             'iol': 'http://www.iol.co.za/cmlink/1.640'}
+ALL_CURRENCIES = ['USD', 'HKD', 'AUD', 'JPY', 'EUR', 'GBP', 'KRW', 'CNY']
 DEFAULTS = {"publication": "bbc", "city": "北京", 
             "currency_from": "USD", "currency_to": "CNY"}
 WEATHER_URL = "https://www.sojson.com/open/api/weather/json.shtml"
@@ -68,7 +69,8 @@ def home():
         currency_from, currency_to = DEFAULTS["currency_from"], DEFAULTS["currency_to"]
     rate = get_rate(currency_from, currency_to)
 
-    return render_template("home.html",articles=articles, weather=weather, currency_from=currency_from, currency_to=currency_to, rate=rate)
+    return render_template("home.html",articles=articles, weather=weather, 
+    currency_from=currency_from, currency_to=currency_to, rate=rate, all_currencies=sorted(ALL_CURRENCIES))
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
