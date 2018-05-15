@@ -1,7 +1,27 @@
 <html>
-    <head><title>Headlines</title></head>
+    <head>
+        <title>Headlines</title>
+        <style>
+            html {
+                font-family: "Helvetica";
+                background:white;
+            }
+            body {
+                background: lightgrey;
+                max-width: 900px;
+                margin: 0 auto;
+            }
+            #header {
+                background: lightblue;
+            }
+        </style>
+    </head>
     <body>
-        <h1>Headlines</h1>
+        <div id="header">
+            <h1>Headlines</h1>
+            <p>Headlines. Currency. Weather.</p>
+            <hr/>
+        </div>
         <h2>Current weather</h2>
         <p>城市:<b>{{weather.city}}</b></p>
         <p>温度:{{weather.wendu}}&nbsp;湿度：{{weather.shidu}}&nbsp;pm2.5：{{weather.pm25}}&nbsp;空气质量:{{weather.quality}}</p>
